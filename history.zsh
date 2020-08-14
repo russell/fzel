@@ -14,7 +14,7 @@ fzel-history-widget() {
 
     (fc -rl 1 | perl -ne 'print if !$seen{(/^\s*[0-9]+\s+(.*)/, $1)}++' > $history_file)
 
-    $(__fzelcmd) emacs --load $FZEL_PATH/history.el -nw -q --eval "(progn (fzel-file-candidates \"$history_file\") (helm-fzel-completion \"$chosen_item_file\") (kill-emacs))" </dev/tty
+    $(__fzelcmd) emacs --load $FZEL_PATH/fzel-init.el -nw -q --eval "(progn (load-file \"$FZEL_PATH/fzel-history.el\") (fzel-history \"$history_file\" \"$chosen_item_file\"))" </dev/tty
     local ret=$?
 
     selected=$(cat $chosen_item_file)
