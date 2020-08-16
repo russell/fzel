@@ -1,4 +1,5 @@
 FZEL_PATH=${0:a:h}
+FZEL_GUI="${FZEL_GUI:--nw}"
 
 __fzelcmd() {
     [ -n "$TMUX_PANE" ] && { [ "${FZEL_TMUX:-0}" != 0 ] || [ -n "$FZEL_TMUX_OPTS" ]; } &&
@@ -19,7 +20,7 @@ fzel-history-widget() {
 
     (fc -rl 1 | perl -ne 'print if !$seen{(/^\s*[0-9]+\s+(.*)/, $1)}++' > $history_file)
 
-    $(__fzelcmd) emacs $(__fzelload) -nw -q --eval "(progn (load-file \"$FZEL_PATH/fzel-history.el\") (fzel-history \"$history_file\" \"$chosen_item_file\"))" </dev/tty
+    $(__fzelcmd) emacs $(__fzelload) $FZEL_GUI -q --eval "(progn (load-file \"$FZEL_PATH/fzel-history.el\") (fzel-history \"$history_file\" \"$chosen_item_file\"))" </dev/tty
     local ret=$?
 
     selected=$(cat $chosen_item_file)
